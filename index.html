@@ -1,15 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link
-      rel="icon"
-      href="./assets/logo.svg"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="./assets/logo.svg" />
+    <link rel="stylesheet" href="index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scientific Calculator</title>
-</head>
-<body>
-    Calculator
-</body>
+  </head>
+  <body>
+    <main>
+      <section>display</section>
+      <section>
+        <div>
+          <p>DEG</p>
+          <p>F-E</p>
+        </div>
+      </section>
+      <section>
+        <div>
+          <button title="Clear Memory" aria-label="clear the memory space">
+            MC
+          </button>
+          <button
+            title="Read Memory"
+            aria-label="read the stored value from memory"
+          >
+            MR
+          </button>
+          <button
+            title="Add Result"
+            aria-label="adds the result of the current calculation to the value in the memory cell"
+          >
+            M+
+          </button>
+          <button
+            title="Substract Result"
+            aria-label="subtracts the result of the current calculation from the value in the memory cell"
+          >
+            M-
+          </button>
+          <button
+            title="Save Result"
+            aria-label="Saves the result of the calculation to memory"
+          >
+            MS
+          </button>
+        </div>
+      </section>
+      <section class="functions">
+        <div>
+          <img src="./assets/trignometry.svg" alt="trignometry" />
+          <select name="trignometric functions">
+            <option value="sin">sin(x)</option>
+            <option value="cos">cos(x)</option>
+            <option value="tan">tan(x)</option>
+          </select>
+        </div>
+        <div>
+          <img src="./assets/function.svg" alt="functions" />
+          <select name="functions">
+            <option vlaue="log">log(x)</option>
+            <option value="sqrt">sqrt(x)</option>
+          </select>
+        </div>
+      </section>
+      <section class="keys">
+        <button>2<sup>nd</sup></button>
+        <button>𝜋</button>
+        <button>e</button>
+        <button>C</button>
+        <button>
+          <img src="./assets/delete.svg" alt="delete" />
+        </button>
+        <button>x<sup>2</sup></button>
+        <button>1/x</button>
+        <button>|x|</button>
+        <button>exp</button>
+        <button>mod</button>
+        <button><sup>2</sup>√x</button>
+        <button>(</button>
+        <button>)</button>
+        <button>n!</button>
+        <button>÷</button>
+        <button>x<sup>y</sup></button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>X</button>
+        <button>10<sup>x</sup></button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>-</button>
+        <button>log</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>+</button>
+        <button>ln</button>
+        <button>+/-</button>
+        <button>0</button>
+        <button>.</button>
+        <button>=</button>
+      </section>
+    </main>
+  </body>
 </html>
