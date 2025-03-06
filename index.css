@@ -79,7 +79,7 @@ main{
 .functions > div{
     display: flex;
 }
-.functions > div:hover{
+.functions > div > select:hover{
     background-color: #fff;
 }
 .functions > div:first-child{
