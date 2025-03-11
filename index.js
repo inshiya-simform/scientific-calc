@@ -2,14 +2,14 @@ const keys = document.querySelector('.keys')
 keys.addEventListener("click",handleClick)
 
 const display = document.getElementById('ans')
-let answer="";
+let expression="";
 function handleClick(event){
     let name = event.target.closest("button")?.name
     if(((name >=0 && name <=9) || (name== '+' || name == '-' || name == '*' || name == '/' || name == '(' || name == ')' || name== '%' || name == '.')) 
         && name !== undefined 
         && name != "calc") 
     {
-        answer += name
+        expression += name
         display.textContent += name        
     }
     else{
@@ -18,11 +18,11 @@ function handleClick(event){
                 display.textContent =""
                 display.style.fontSize = "-webkit-xxx-large"
                 display.style.color = "black"
-                answer = ""
+                expression = ""
                 break
             case "calc":
                 try{
-                    display.textContent = eval(answer).toFixed(2)
+                    display.textContent = eval(expression).toFixed(2)
                     break
                 }
                 catch(error){
@@ -31,54 +31,54 @@ function handleClick(event){
                     break
                 }
             case "factorial":
-                display.textContent = answer + '!'
-                let fact__ans = factorial(answer[answer.length - 1])
-                answer = answer.slice(0,answer.length-1)
-                answer += fact__ans
+                display.textContent = expression + '!'
+                let fact__ans = factorial(expression[expression.length - 1])
+                expression = expression.slice(0,expression.length-1)
+                expression += fact__ans
                 break
             case "del":
-                answer = answer.slice(0,answer.length-1)
-                display.textContent = display.textContent.slice(0,answer.length-1)
+                expression = expression.slice(0,expression.length-1)
+                display.textContent = display.textContent.slice(0,expression.length-1)
                 break
             case "e":
                 display.textContent +=  'e'
-                answer ? answer += "*2.7183" : answer += "2.7183"
+                expression ? expression += "*Math.E" : expression += "Math.E"
                 break
             case "abs":
-                answer += 'abs('
-                display.textContent = answer
+                expression += 'abs('
+                display.textContent = expression
                 break
             case "pi":
                 display.textContent +=  '𝜋'
-                answer ? answer += "*3.14" : answer += "3.14"
+                expression ? expression += "*Math.PI" : expression += "Math.PI"
                 break
             case "div-by-1":
-                answer += "(1/"
-                display.textContent = answer
+                expression += "(1/"
+                display.textContent = expression
                 break
             case "sqr":
-                let val = square(answer[answer.length-1])
-                answer = answer.slice(0, answer.length-1) + val
+                let val = square(expression[expression.length-1])
+                expression = expression.slice(0, expression.length-1) + val
                 display.textContent += '^2'
                 break
             case "sqrt":
-                answer += 'Math.sqrt('
+                expression += 'Math.sqrt('
                 display.textContent += '√('
                 break
             case "x-pow-y":
-                answer += "**"
+                expression += "**"
                 display.textContent += "^"
                 break
             case "10-pow-x":
-                answer += "10**"
+                expression += "10**"
                 display.textContent += "10^"
                 break
             case "log":
-                answer += "Math.log("
+                expression += "Math.log("
                 display.textContent += "log("
                 break
             case "ln":
-                answer += 'Math.log10('
+                expression += 'Math.log10('
                 display.textContent += "ln("
                 break
         }
