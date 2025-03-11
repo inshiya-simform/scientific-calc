@@ -4,7 +4,7 @@ keys.addEventListener("click",handleClick)
 const display = document.getElementById('ans')
 let answer="";
 function handleClick(event){
-    let name = event.target.name
+    let name = event.target.closest("button")?.name
     if(((name >=0 && name <=9) || (name== '+' || name == '-' || name == '*' || name == '/' || name == '(' || name == ')' || name== '%' || name == '.')) 
         && name !== undefined 
         && name != "calc") 
@@ -26,8 +26,7 @@ function handleClick(event){
                     break
                 }
                 catch(error){
-                    display.textContent = error.message
-                    display.style.fontSize = "medium"
+                    display.textContent = "Error"
                     display.style.color = "red"
                     break
                 }
