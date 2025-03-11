@@ -42,7 +42,7 @@ function handleClick(event){
                 break
             case "e":
                 display.textContent +=  'e'
-                expression ? expression += "*Math.E" : expression += "Math.E"
+                expression = expression ? expression + "*Math.E" : "Math.E"
                 break
             case "abs":
                 expression += 'abs('
@@ -50,7 +50,7 @@ function handleClick(event){
                 break
             case "pi":
                 display.textContent +=  '𝜋'
-                expression ? expression += "*Math.PI" : expression += "Math.PI"
+                expression = expression ? expression + "*Math.PI" : "Math.PI"
                 break
             case "div-by-1":
                 expression += "(1/"
@@ -81,6 +81,9 @@ function handleClick(event){
                 expression += 'Math.log10('
                 display.textContent += "ln("
                 break
+            case "+/-":
+
+
         }
     }
 }
