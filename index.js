@@ -71,28 +71,35 @@ let second__flag = false // track 2nd button state
 // function handles trignometric, floor and ceil functions
 function handleChange(e){
     let value = e.target.value
+    const trigno_func = document.getElementById('trigno_func')
+    const func = document.getElementById('func')
     switch(value){
         case "sin(x)":
             expression += 'Math.sin('
             display.textContent += 'sin('
+            trigno_func.selected = true
             break
         case "cos(x)":
             expression += 'Math.cos('
             display.textContent += 'cos('
+            trigno_func.selected = true
             break
         case "tan(x)":
             expression += 'Math.tan('
             display.textContent += 'tan('
+            trigno_func.selected = true
             break
         case "floor(x)":
             expression += 'Math.floor('
             display.textContent += 'floor('
+            func.selected = true
             break
         case "ceil(x)":
             expression += 'Math.ceil('
             display.textContent += 'ceil('
+            func.selected = true
             break
-    }
+    }  
 }
 
 // function handles all the key operations
