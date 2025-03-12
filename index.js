@@ -13,6 +13,12 @@ functions.addEventListener("change",handleChange)
 const memory_operation = document.getElementById('memory-op')
 memory_operation.addEventListener("click", handleMemoryClick)
 
+const history_btn = document.getElementById('history')
+history_btn.addEventListener("click",handleHistory)
+
+const history_list = document.getElementById('history_list')
+history_list.addEventListener("click",handleHistoryClick)
+
 //key events
 document.addEventListener("keydown", handleBackSpcae)
 document.addEventListener("keypress", handleKeyEvent)
@@ -71,6 +77,8 @@ const sqr__changed = document.getElementById('sqr__change')
 //global variables used throughout
 let expression = ""
 let second__flag = false // track 2nd button state
+let history__flag = false //track history state
+let history_arr = []
 
 // function handles memory related operations
 function handleMemoryClick(e){
@@ -177,6 +185,8 @@ function handleClick(event){
             case "calc":
                 try{
                     display.textContent = eval(expression).toFixed(2)
+                    history_arr.push(expression + '=' + display.textContent)
+                    localStorage.setItem('history',JSON.stringify(history_arr))
                     break
                 }
                 catch(error){
@@ -262,6 +272,39 @@ function handleClick(event){
     }
 }
 
+// function handles history
+function handleHistory(){
+    history__flag = !history__flag
+    const history_container = document.querySelector('.history')
+    if(history__flag){
+        history_container.style.display = 'inline'
+        const history = JSON.parse(localStorage.getItem('history'))
+        history_list.innerHTML =""
+        for(let result of history){
+            let li = document.createElement('li')
+            li.textContent = result
+            $(li).css("border-bottom","1px solid #333").css("padding","5px")
+            history_list.appendChild(li)
+        }
+        const nodeList = document.querySelectorAll('.history-hide')
+        for(let node of nodeList){
+            node.style.display = 'none'
+        }
+    }else{
+        history_container.style.display = 'none'
+        const nodeList = document.querySelectorAll('.history-hide')
+        for(let node of nodeList){
+            node.style.display = 'inline'
+        }
+    }
+}
+
+// fucntion handles click of list item in history
+function handleHistoryClick(e){
+    let answer = e.target.textContent.match(/=(.*)/)
+    display.textContent = answer[1]
+}
+
 //returns factorial of given number
 function factorial(num){
     if(num === 0 || num === 1){
@@ -276,4 +319,15 @@ function factorial(num){
 function updateData(expContent,displayContent){
     expression += expContent
     display.textContent += displayContent
-  }
+}
+
+//utility function
+function $(element){   
+    return {
+        element: element,
+        css: function (property, value){
+            element.style.setProperty(property,value)
+            return this
+        }
+    }
+}

@@ -8,7 +8,7 @@
     --font-light: rgb(199, 198, 198);
     --bg: rgb(243, 240, 240);
     --danger: rgb(255, 124, 124);
-    --bg-history: rgb(219, 217, 217)
+    --bg-history: rgba(219, 217, 217,0.2)
 }
 /* element styling  */
 body,html{
@@ -133,6 +133,13 @@ main{
     grid-row: 1/8;
     background-color: var(--bg-history);
     display: none;
+    height: 260px;
+    overflow: auto;
+}
+#history_list{
+    list-style: square;
+    color: #333;
+    font-size: 14px;
 }
 
 /* reponsiveness  */
