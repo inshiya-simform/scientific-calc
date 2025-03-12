@@ -1,3 +1,5 @@
+import {ERROR} from './constant.js'
+
 //selecting and adding event listeners to html elements
 const keys = document.querySelector('.keys')
 keys.addEventListener("click",handleClick)
@@ -33,7 +35,6 @@ function handleKeyEvent(e) {
       ".",
       "=",
       "c",
-      "C",
     ])
     let key = e.key
     if ((key >= "0" && key <= "9") || allowedKeys.has(key))
@@ -43,12 +44,12 @@ function handleKeyEvent(e) {
             try{
                 display.textContent = eval(expression).toFixed(2)
             }catch(error){
-                display.textContent = "Error"
+                display.textContent = ERROR
                 display.style.color = "red"
             }
             
         } 
-        else if(key === "c" || key === "C"){
+        else if(key.toLowerCase() === "c"){
             display.textContent = ""
             expression = ""
         }
@@ -75,28 +76,23 @@ function handleChange(e){
     const func = document.getElementById('func')
     switch(value){
         case "sin(x)":
-            expression += 'Math.sin('
-            display.textContent += 'sin('
+            updateData('Math.sin(','sin(')
             trigno_func.selected = true
             break
         case "cos(x)":
-            expression += 'Math.cos('
-            display.textContent += 'cos('
+            updateData('Math.cos(','cos(')
             trigno_func.selected = true
             break
         case "tan(x)":
-            expression += 'Math.tan('
-            display.textContent += 'tan('
+            updateData('Math.tan(','tan(')
             trigno_func.selected = true
             break
         case "floor(x)":
-            expression += 'Math.floor('
-            display.textContent += 'floor('
+            updateData('Math.floor(','floor(')
             func.selected = true
             break
         case "ceil(x)":
-            expression += 'Math.ceil('
-            display.textContent += 'ceil('
+            updateData('Math.ceil(','ceil(')
             func.selected = true
             break
     }  
@@ -109,8 +105,7 @@ function handleClick(event){
         && name !== undefined 
         && name != "calc") 
     {
-        expression += name
-        display.textContent += name        
+        updateData(name,name)      
     }
     else{
         switch (name){
@@ -126,7 +121,7 @@ function handleClick(event){
                     break
                 }
                 catch(error){
-                    display.textContent = "Error"
+                    display.textContent = ERROR
                     display.style.color = "red"
                     break
                 }
@@ -168,7 +163,7 @@ function handleClick(event){
                 display.textContent = expression
                 break
             case "sqr":
-                let val = second__flag ? cube(expression[expression.length-1]) : square(expression[expression.length-1])
+                let val = second__flag ? Math.pow(expression[expression.length-1], 3) : Math.pow(expression[expression.length-1], 2)
                 expression = expression.slice(0, expression.length-1) + val
                 display.textContent += second__flag ? '^3' : '^2'
                 break
@@ -177,20 +172,16 @@ function handleClick(event){
                 display.textContent += second__flag ? '∛(' : '√('
                 break
             case "x-pow-y":
-                expression += "**"
-                display.textContent += "^"
+                updateData("**","^")
                 break
             case "10-pow-x":
-                expression += "10**"
-                display.textContent += "10^"
+                updateData("10**","10^")
                 break
             case "log":
-                expression += "Math.log("
-                display.textContent += "log("
+                updateData("Math.log(","log(")
                 break
             case "ln":
-                expression += 'Math.log10('
-                display.textContent += "ln("
+                updateData('Math.log10(','ln(')
                 break
             case "+/-":
                 let match = expression.match(/(-?\d+(\.\d+)?)$/)
@@ -199,7 +190,15 @@ function handleClick(event){
                 display.textContent = display.textContent.replace(/(-?\d+(\.\d+)?)$/, `${toggle}`)
             case "2nd":
                 second__flag = !second__flag
-                second__flag ? sqrt__changed.textContent = sqr__changed.textContent = '3' : sqrt__changed.textContent = sqr__changed.textContent = '2'
+                // if flag if true then change superscript characters to 3 else 2
+                if(second__flag){
+                    sqrt__changed.textContent = '3'
+                    sqr__changed.textContent = '3'
+                }
+                else{
+                    sqrt__changed.textContent = '2'
+                    sqr__changed.textContent = '2'
+                }
         }
     }
 }
@@ -214,20 +213,8 @@ function factorial(num){
     }
 }
 
-//returns square of given number
-function square(num){
-    if(typeof num == 'string'){
-        return num*num
-    }else{
-        return null
-    }
-}
-
-//returns cube of given number
-function cube(num){
-    if(typeof num == 'string'){
-        return num*num*num
-    }else{
-        return null
-    }
-}
+// updates data
+function updateData(expContent,displayContent){
+    expression += expContent
+    display.textContent += displayContent
+  }
