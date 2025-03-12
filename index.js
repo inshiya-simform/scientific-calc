@@ -10,6 +10,9 @@ trigno.addEventListener('change',handleChange)
 const functions = document.getElementById('function')
 functions.addEventListener("change",handleChange)
 
+const memory_operation = document.getElementById('memory-op')
+memory_operation.addEventListener("click", handleMemoryClick)
+
 //key events
 document.addEventListener("keydown", handleBackSpcae)
 document.addEventListener("keypress", handleKeyEvent)
@@ -68,6 +71,62 @@ const sqr__changed = document.getElementById('sqr__change')
 //global variables used throughout
 let expression = ""
 let second__flag = false // track 2nd button state
+
+// function handles memory related operations
+function handleMemoryClick(e){
+    let name = e.target.name
+    switch(name){
+        case "mc":
+            if(localStorage.getItem("memory")){
+                localStorage.removeItem("memory")
+                const nodeList = document.querySelectorAll('.light')
+                for(let node of nodeList){
+                    node.style.color = 'rgb(199, 198, 198)'
+                }
+            }
+            else{
+                alert('Nothing in memory!')
+            }
+            break
+        case "mr":
+            if(localStorage.getItem("memory")){
+                display.textContent = localStorage.getItem('memory')
+                expression = display.textContent
+            }
+            else{
+                alert('Nothing in memory!')
+            }
+            break
+        case "m+":
+            if(localStorage.getItem('memory')){
+                localStorage.setItem('memory',Number(display.textContent) + Number(localStorage.getItem('memory')))
+            }
+            else{
+                alert('Nothing in memory!')
+            }
+            break
+        case "m-":
+            if(localStorage.getItem('memory')){
+                localStorage.setItem('memory', localStorage.getItem('memory') - display.textContent)
+            }
+            else{
+                alert('Nothing in memory!')
+            }            
+            break
+        case "ms":
+            if(display.textContent.match(/^\d+$/)){
+                localStorage.setItem("memory",display.textContent)
+                const nodeList = document.querySelectorAll('.light')
+                for(let node of nodeList){
+                    node.style.color = 'black'
+                }
+            }
+            else{
+                alert('Can only store a number in memory.')
+            }
+            break
+    }
+}
 
 // function handles trignometric, floor and ceil functions
 function handleChange(e){
