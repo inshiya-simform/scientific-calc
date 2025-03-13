@@ -36,4 +36,4 @@ export const CALCULATOR_OPERATION = {
     second : "2nd",
 }
 export const HISTORY = [] // store all previous calculations
-export const DISPLAY_SCREEN = document.getElementById('ans')
+export let DISPLAY_SCREEN = document.getElementById('ans')

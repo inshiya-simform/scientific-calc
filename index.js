@@ -1,6 +1,10 @@
 import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, DISPLAY_SCREEN, HISTORY } from './constant.js'
 import { $, setLocalStorage } from './utils.js'
 
+// global variables used throughout
+export let expression = ""
+let is2ndEnabled = false // track 2nd button state
+
 // selecting and adding event listeners to html elements
 const operationElement = document.querySelector('.keys')
 operationElement.addEventListener("click",handleOperationClick)
@@ -61,10 +65,6 @@ function handleKeyEvent(e) {
 // selecting elements from html
 const squareRootElement = document.getElementById('sqrt__change')
 const squareElement = document.getElementById('sqr__change')
-
-// global variables used throughout
-export let expression = ""
-let is2ndEnabled = false // track 2nd button state
 
 // function handles trignometric, floor and ceil functions
 function handleTrignometryAdvanceMathFunction(e){
@@ -176,7 +176,7 @@ function handleOperationClick(event){
                 updateExpressionAndDisplay('Math.log10(','ln(')
                 break
             case CALCULATOR_OPERATION.toggleSign:
-                const lastDigitOfExpression = expression.match(/(-?\d+(\.\d+)?)$/)
+                const lastDigitOfExpression = DISPLAY_SCREEN.textContent.match(/(-?\d+(\.\d+)?)$/)
                 const toggleLastDigit = Number(lastDigitOfExpression[1]) * -1
                 expression = expression.replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`)
                 DISPLAY_SCREEN.textContent = DISPLAY_SCREEN.textContent.replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`)

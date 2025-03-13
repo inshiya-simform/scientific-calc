@@ -23,8 +23,8 @@ function handleMemoryOperation(e){
             break
         case MEMORY_OPERATION.memoryRead:
             if(localStorage.getItem(MEMORY_KEY)){
-                DISPLAY_SCREEN.textContent = localStorage.getItem(MEMORY_KEY)
-                expression = DISPLAY_SCREEN.textContent
+                DISPLAY_SCREEN.textContent += localStorage.getItem(MEMORY_KEY)
+                expression += DISPLAY_SCREEN.textContent
             }
             else{
                 alert(MEMORY_EMPTY)
