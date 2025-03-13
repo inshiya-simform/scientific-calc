@@ -143,6 +143,8 @@ main{
     list-style: square;
     color: #333;
     font-size: 14px;
+    width: 300px;
+    text-wrap: wrap;
 }
 
 /* reponsiveness  */
