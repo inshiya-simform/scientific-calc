@@ -1,4 +1,4 @@
-import {ERROR} from './constant.js'
+import {ERROR, MEMORY_EMPTY, ONLY_DIGITS} from './constant.js'
 
 //selecting and adding event listeners to html elements
 const keys = document.querySelector('.keys')
@@ -85,7 +85,7 @@ function handleMemoryClick(e){
                 }
             }
             else{
-                alert('Nothing in memory!')
+                alert(MEMORY_EMPTY)
             }
             break
         case "mr":
@@ -94,7 +94,7 @@ function handleMemoryClick(e){
                 expression = display.textContent
             }
             else{
-                alert('Nothing in memory!')
+                alert(MEMORY_EMPTY)
             }
             break
         case "m+":
@@ -102,7 +102,7 @@ function handleMemoryClick(e){
                 localStorage.setItem('memory',Number(display.textContent) + Number(localStorage.getItem('memory')))
             }
             else{
-                alert('Nothing in memory!')
+                alert(MEMORY_EMPTY)
             }
             break
         case "m-":
@@ -110,7 +110,7 @@ function handleMemoryClick(e){
                 localStorage.setItem('memory', localStorage.getItem('memory') - display.textContent)
             }
             else{
-                alert('Nothing in memory!')
+                alert(MEMORY_EMPTY)
             }            
             break
         case "ms":
@@ -122,7 +122,7 @@ function handleMemoryClick(e){
                 }
             }
             else{
-                alert('Can only store a number in memory.')
+                alert(ONLY_DIGITS)
             }
             break
     }
