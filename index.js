@@ -155,7 +155,7 @@ function handleOperationClick(event){
                 DISPLAY_SCREEN.textContent = expression
                 break
             case CALCULATOR_OPERATION.square:
-                const val = second__flag ? Math.pow(expression[expression.length-1], 3) : Math.pow(expression[expression.length-1], 2)
+                const val = is2ndEnabled ? Math.pow(expression[expression.length-1], 3) : Math.pow(expression[expression.length-1], 2)
                 expression = expression.slice(0, expression.length-1) + val
                 DISPLAY_SCREEN.textContent += is2ndEnabled ? '^3' : '^2'
                 break
