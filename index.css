@@ -8,7 +8,7 @@
     --font-light: rgb(199, 198, 198);
     --bg: rgb(243, 240, 240);
     --danger: rgb(255, 124, 124);
-    --bg-history: rgba(219, 217, 217,0.2)
+    --bg-history: rgb(219, 217, 217)
 }
 /* element styling  */
 body,html{
@@ -105,6 +105,7 @@ main{
     grid-template-columns: repeat(5,1fr);
     grid-template-rows: repeat(7,1fr);
     gap: 2px;
+    position: relative;
 }
 .btn{
     background-color: var(--bg-btn);
@@ -129,11 +130,12 @@ main{
 
 /* history  section  */
 .history{
-    grid-column: 1/5;
-    grid-row: 1/8;
+    position: absolute;
+    top: 0;
+    left: 0;
     background-color: var(--bg-history);
-    display: none;
-    height: 260px;
+    height: 100%;
+    width: 100%;
     overflow: auto;
 }
 #history_list{

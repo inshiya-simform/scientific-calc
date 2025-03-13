@@ -52,6 +52,8 @@ function handleKeyEvent(e) {
         {
             try{
                 display.textContent = eval(expression).toFixed(2)
+                history_arr.push(expression + '=' + display.textContent)
+                localStorage.setItem('history',JSON.stringify(history_arr))
             }catch(error){
                 display.textContent = ERROR
                 display.style.color = "red"
@@ -60,6 +62,8 @@ function handleKeyEvent(e) {
         } 
         else if(key.toLowerCase() === "c"){
             display.textContent = ""
+            display.style.fontSize = "-webkit-xxx-large"
+            display.style.color = "black"
             expression = ""
         }
         else {
@@ -286,16 +290,8 @@ function handleHistory(){
             $(li).css("border-bottom","1px solid #333").css("padding","5px")
             history_list.appendChild(li)
         }
-        const nodeList = document.querySelectorAll('.history-hide')
-        for(let node of nodeList){
-            node.style.display = 'none'
-        }
     }else{
         history_container.style.display = 'none'
-        const nodeList = document.querySelectorAll('.history-hide')
-        for(let node of nodeList){
-            node.style.display = 'inline'
-        }
     }
 }
 
@@ -303,6 +299,7 @@ function handleHistory(){
 function handleHistoryClick(e){
     let answer = e.target.textContent.match(/=(.*)/)
     display.textContent = answer[1]
+    expression += answer[1]
 }
 
 //returns factorial of given number
