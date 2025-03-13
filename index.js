@@ -157,7 +157,7 @@ function handleOperationClick(event){
             case CALCULATOR_OPERATION.square:
                 const val = second__flag ? Math.pow(expression[expression.length-1], 3) : Math.pow(expression[expression.length-1], 2)
                 expression = expression.slice(0, expression.length-1) + val
-                DISPLAY_SCREEN.textContent += second__flag ? '^3' : '^2'
+                DISPLAY_SCREEN.textContent += is2ndEnabled ? '^3' : '^2'
                 break
             case CALCULATOR_OPERATION.squareRoot:
                 expression += is2ndEnabled ? 'Math.cbrt(' :'Math.sqrt('
