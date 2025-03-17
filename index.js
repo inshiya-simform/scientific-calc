@@ -244,7 +244,8 @@ function clearScreen(){
 
 // calculates result
 function calculateResult(){
-    replaceDisplayScreenContent(eval(getExpression()).toFixed(2))
+    const removeZeroes = getExpression().replace(/\b0+(\d+)/g, "$1")
+    replaceDisplayScreenContent(eval(removeZeroes).toFixed(2))
     HISTORY.push(getExpression() + '=' + getDisplayScreenContent())
     setLocalStorage('history',JSON.stringify(HISTORY))
 }
