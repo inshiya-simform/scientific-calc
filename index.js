@@ -1,20 +1,43 @@
-import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
-import { getIsDegreeEnabled, toggleExponential } from './degree.js'
-import { $, setLocalStorage } from './utils.js'
+import { TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent } from './constant.js'
+import { getIsDegreeEnabled } from './degree.js'
+import { toggleExponential } from './function-expression.js'
+import { calculateResult, clearScreen, factorial, onError, updateExpressionAndDisplay } from './utils.js'
 
-// global variables used throughout
+/**
+ * stores the current mathematical expression.
+ * @type {string}
+ */
 let expression = ""
+
+/**
+ * retrieves the current expression.
+ * @returns {string} the current mathematical expression.
+ */
 export function getExpression(){
     return expression
 }
+
+/**
+ * appends a string to the existign expression.
+ * @param {string} str  - the string to append.
+ */
 export function setExpression(str){
     expression += str
 }
+
+/**
+ * replaces the current expression with a new string.
+ * @param {string} str  - the new expression string.
+ */
 export function replaceExpression(str){
     expression = str
 }
 
-let is2ndEnabled = false // track 2nd button state
+/**
+ * tracks whether the "2nd" function button is enabled.
+ * @type {boolean}
+ */
+let is2ndEnabled = false
 
 // selecting and adding event listeners to html elements
 const operationElement = document.querySelector('.keys')
@@ -30,14 +53,21 @@ advanceMathOperationElement.addEventListener("change",handleTrignometryAdvanceMa
 document.addEventListener("keydown", handleBackSpace)
 document.addEventListener("keypress", handleKeyEvent)
 
-// function to handle the backspace
+/**
+ * handles the backspace key event to remove the last character from the expression and display.
+ * @param {KeyboardEvent} e - the event object trigerred by the backspace key press.
+ */
 function handleBackSpace(e) {
     if (e.key === "Backspace") {
       replaceExpression(getExpression().slice(0, -1))
       replaceDisplayScreenContent(getDisplayScreenContent().slice(0, -1))
     }
   }
-// function to handle keypress events
+
+/**
+ * handles keypress events to allow keyboard input in the calculator.
+ * @param {KeyboardEvent} e - the vent object trigerred by a key press.
+ */
 function handleKeyEvent(e) {
     let allowedKeys = new Set([
       "Enter",
@@ -77,7 +107,10 @@ function handleKeyEvent(e) {
 const squareRootElement = document.getElementById('sqrt__change')
 const squareElement = document.getElementById('sqr__change')
 
-// function handles trignometric, floor and ceil functions
+/**
+ * handles trignometric, floor, and ceil functions.
+ * @param {Event} e - the event object triggered by a function selection.
+ */
 function handleTrignometryAdvanceMathFunction(e){
     const operationName = e.target.value
     const trignometryOperation = document.getElementById('trigno_func')
@@ -109,7 +142,10 @@ function handleTrignometryAdvanceMathFunction(e){
     }  
 }
 
-// function handles all the key operations
+/**
+ * hanldes all key operations when a button is clicked.
+ * @param {Event} event - the event object triggered by a button click.
+ */
 function handleOperationClick(event){
     const name = event.target.closest("button")?.name
     const IS_DIGIT = name >=0 && name <=9
@@ -217,40 +253,4 @@ function handleOperationClick(event){
                 toggleExponential()
         }
     }
-}
-
-//returns factorial of given number
-function factorial(num){
-    if(num === 0 || num === 1){
-        return 1
-    }
-    else{
-        return num * factorial(num-1)
-    }
-}
-
-// updates data
-function updateExpressionAndDisplay(expContent,displayContent){
-    setExpression(expContent)
-    setDisplayScreenContent(displayContent)
-}
-
-// clear display content
-function clearScreen(){
-    replaceDisplayScreenContent("")
-    $(getDisplayScreen()).css('font-size','-webkit-xxx-large').css('color','black')
-    replaceExpression("")
-}
-
-// calculates result
-function calculateResult(){
-    replaceDisplayScreenContent(eval(getExpression()).toFixed(2))
-    HISTORY.push(getExpression() + '=' + getDisplayScreenContent())
-    setLocalStorage('history',JSON.stringify(HISTORY))
-}
-
-// error
-function onError(){
-    replaceDisplayScreenContent(ERROR)
-    $(getDisplayScreen()).css('color','red')
 }
