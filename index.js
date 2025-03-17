@@ -1,4 +1,4 @@
-import { TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent } from './constant.js'
+import { TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, ERROR } from './constant.js'
 import { getIsDegreeEnabled } from './degree.js'
 import { toggleExponential } from './function-expression.js'
 import { calculateResult, clearScreen, factorialHandler, onError, updateExpressionAndDisplay } from './utils.js'
@@ -147,7 +147,7 @@ function handleTrignometryAdvanceMathFunction(e){
  * @param {Event} event - the event object triggered by a button click.
  */
 function handleOperationClick(event){
-    if(getDisplayScreenContent() === "Error"){
+    if(getDisplayScreenContent() === ERROR){
         clearScreen()
     }
     const name = event.target.closest("button")?.name
