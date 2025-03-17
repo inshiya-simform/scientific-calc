@@ -1,8 +1,18 @@
-import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, DISPLAY_SCREEN, HISTORY } from './constant.js'
+import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
 import { $, setLocalStorage } from './utils.js'
 
 // global variables used throughout
-export let expression = ""
+let expression = ""
+export function getExpression(){
+    return expression
+}
+export function setExpression(str){
+    expression += str
+}
+export function replaceExpression(str){
+    expression = str
+}
+
 let is2ndEnabled = false // track 2nd button state
 
 // selecting and adding event listeners to html elements
@@ -22,8 +32,8 @@ document.addEventListener("keypress", handleKeyEvent)
 // function to handle the backspace
 function handleBackSpace(e) {
     if (e.key === "Backspace") {
-      expression = expression.slice(0, -1)
-      display.textContent = display.textContent.slice(0, -1)
+      replaceExpression(getExpression().slice(0, -1))
+      replaceDisplayScreenContent(getDisplayScreenContent().slice(0, -1))
     }
   }
 // function to handle keypress events
@@ -119,49 +129,55 @@ function handleOperationClick(event){
                     break
                 }
             case CALCULATOR_OPERATION.factorial:
-                DISPLAY_SCREEN.textContent = expression + '!'
-                const factorialAnswer = factorial(expression[expression.length - 1])
-                expression = expression.slice(0,expression.length-1)
-                expression += factorialAnswer
+                replaceDisplayScreenContent(getExpression() + '!')
+                const factorialAnswer = factorial(getExpression()[getExpression().length - 1])
+                replaceExpression(getExpression().slice(0,getExpression().length-1))
+                setExpression(factorialAnswer)
                 break
             case CALCULATOR_OPERATION.delete:
-                if(expression.endsWith('**')){
-                    expression = expression.slice(0,-1)
+                if(getExpression().endsWith('**')){
+                    replaceExpression(getExpression().slice(0,-1))
                 }
-                if(expression.endsWith('Math.E')){
-                    expression = expression.slice(0,-7)
+                if(getExpression().endsWith('Math.E')){
+                    replaceExpression(getExpression().slice(0,-7))
                 }
-                else if(expression.endsWith('Math.PI')){
-                    expression = expression.slice(0,-8)
+                else if(getExpression().endsWith('Math.PI')){
+                    replaceExpression(getExpression().slice(0,-8))
                 }
                 else{
-                    expression = expression.slice(0,-1)
+                    replaceExpression(getExpression().slice(0,-1))
                 }
-                DISPLAY_SCREEN.textContent = DISPLAY_SCREEN.textContent.slice(0,-1)
+                replaceDisplayScreenContent(getDisplayScreenContent().textContent.slice(0,-1))
                 break
             case CALCULATOR_OPERATION.e:
-                DISPLAY_SCREEN.textContent +=  'e'
-                expression = expression ? expression + "*Math.E" : "Math.E"
+                setDisplayScreenContent('e')
+                const eValue = getExpression() ? getExpression() + "*Math.E" : "Math.E"
+                replaceExpression(eValue)
                 break
             case CALCULATOR_OPERATION.absolute:
                 updateExpressionAndDisplay('Math.abs(','abs(')
                 break
             case CALCULATOR_OPERATION.pi:
-                DISPLAY_SCREEN.textContent +=  '𝜋'
-                expression = expression ? expression + "*Math.PI" : "Math.PI"
+                setDisplayScreenContent('𝜋')
+                const piValue = getExpression() ? getExpression() + "*Math.PI" : "Math.PI"
+                replaceExpression(piValue)
+
                 break
             case CALCULATOR_OPERATION.fraction:
-                expression += "(1/"
-                DISPLAY_SCREEN.textContent = expression
+                setExpression("(1/")
+                replaceDisplayScreenContent(getExpression())
                 break
             case CALCULATOR_OPERATION.square:
-                const val = is2ndEnabled ? Math.pow(expression[expression.length-1], 3) : Math.pow(expression[expression.length-1], 2)
-                expression = expression.slice(0, expression.length-1) + val
-                DISPLAY_SCREEN.textContent += is2ndEnabled ? '^3' : '^2'
+                const val = is2ndEnabled ? Math.pow(getExpression()[getExpression().length-1], 3) : Math.pow(getExpression()[getExpression().length-1], 2)
+                replaceExpression(getExpression().slice(0, getExpression().length-1) + val)
+                const valOn2nd= is2ndEnabled ? '^3' : '^2'
+                setDisplayScreenContent(valOn2nd)
                 break
             case CALCULATOR_OPERATION.squareRoot:
-                expression += is2ndEnabled ? 'Math.cbrt(' :'Math.sqrt('
-                DISPLAY_SCREEN.textContent += is2ndEnabled ? '∛(' : '√('
+                const cbrtValue = is2ndEnabled ? 'Math.cbrt(' :'Math.sqrt('
+                setExpression(cbrtValue)
+                const rootOn2nd = is2ndEnabled ? '∛(' : '√('
+                setDisplayScreenContent(rootOn2nd)
                 break
             case CALCULATOR_OPERATION.power:
                 updateExpressionAndDisplay("**","^")
@@ -176,10 +192,10 @@ function handleOperationClick(event){
                 updateExpressionAndDisplay('Math.log10(','ln(')
                 break
             case CALCULATOR_OPERATION.toggleSign:
-                const lastDigitOfExpression = DISPLAY_SCREEN.textContent.match(/(-?\d+(\.\d+)?)$/)
+                const lastDigitOfExpression = getDisplayScreenContent().match(/(-?\d+(\.\d+)?)$/)
                 const toggleLastDigit = Number(lastDigitOfExpression[1]) * -1
-                expression = expression.replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`)
-                DISPLAY_SCREEN.textContent = DISPLAY_SCREEN.textContent.replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`)
+                replaceExpression(getExpression().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
+                replaceDisplayScreenContent(getDisplayScreenContent().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
             case CALCULATOR_OPERATION.second:
                 is2ndEnabled = !is2ndEnabled
                 // if flag if true then change superscript characters to 3 else 2
@@ -207,26 +223,26 @@ function factorial(num){
 
 // updates data
 function updateExpressionAndDisplay(expContent,displayContent){
-    expression += expContent
-    DISPLAY_SCREEN.textContent += displayContent
+    setExpression(expContent)
+    setDisplayScreenContent(displayContent)
 }
 
 // clear display content
 function clearScreen(){
-    DISPLAY_SCREEN.textContent =""
-    $(DISPLAY_SCREEN).css('font-size','-webkit-xxx-large').css('color','black')
-    expression = ""
+    replaceDisplayScreenContent("")
+    $(getDisplayScreen()).css('font-size','-webkit-xxx-large').css('color','black')
+    replaceExpression("")
 }
 
 // calculates result
 function calculateResult(){
-    DISPLAY_SCREEN.textContent = eval(expression).toFixed(2)
-    HISTORY.push(expression + '=' + DISPLAY_SCREEN.textContent)
+    replaceDisplayScreenContent(eval(getExpression()).toFixed(2))
+    HISTORY.push(getExpression() + '=' + getDisplayScreenContent())
     setLocalStorage('history',JSON.stringify(HISTORY))
 }
 
 // error
 function onError(){
-    DISPLAY_SCREEN.textContent = ERROR
-    $(DISPLAY_SCREEN).css('color','red')
+    replaceDisplayScreenContent(ERROR)
+    $(getDisplayScreen()).css('color','red')
 }

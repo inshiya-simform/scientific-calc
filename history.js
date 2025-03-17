@@ -1,15 +1,17 @@
 import { $, getLocalStorage } from './utils.js'
-import { DISPLAY_SCREEN } from './constant.js'
-import { expression } from './index.js'
+import { replaceDisplayScreenContent } from './constant.js'
+import { setExpression } from './index.js'
 
 const historyToggleButton = document.getElementById('history')
 historyToggleButton.addEventListener("click",handleHistoryToggle)
-
 const historyList = document.getElementById('history_list')
 historyList.addEventListener("click",addResultInExpression)
 
-let isHistoryEnabled = false // track history state
+let isHistoryEnabled = false // track history state; false: display-none; true: diplay-inline
 
+function hideHistory(historyContainerElement){
+    $(historyContainerElement).css('display','none')
+}
 // function handles history
 function handleHistoryToggle(){
     isHistoryEnabled = !isHistoryEnabled
@@ -27,13 +29,13 @@ function handleHistoryToggle(){
         }
         historyList.appendChild(historyFragment)
     }else{
-        $(historyContainerElement).css('display','none')
+        hideHistory(historyContainerElement)
     }
 }
 
 // fucntion handles click of list item in history
 function addResultInExpression(e){
     let answer = e.target.textContent.match(/=(.*)/)
-    DISPLAY_SCREEN.textContent = answer[1]
-    expression += answer[1]
+    replaceDisplayScreenContent(answer[1])
+    setExpression(answer[1])
 }
