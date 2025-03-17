@@ -31,8 +31,7 @@ select{
 main{
     padding: var(--space);
     display: grid;
-    grid-template-rows: 1fr repeat(3, minmax(auto, 40px)) 3fr;
-    height: 50%;
+    grid-template-rows: minmax(100px, 1fr) repeat(3, minmax(auto, 40px)) 3fr;
     width: 350px;
     position: fixed;
     top: 50%;

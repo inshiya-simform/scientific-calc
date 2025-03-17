@@ -78,7 +78,8 @@ export function clearScreen(){
  */
 export function calculateResult(){
     const removeZeroes = getExpression().replace(/\b0+(\d+)/g, "$1")
-    replaceDisplayScreenContent(eval(removeZeroes).toFixed(2))
+    const result = eval(removeZeroes).toFixed(2)
+    replaceDisplayScreenContent(result.toString())
     HISTORY.push(getExpression() + '=' + getDisplayScreenContent())
     setLocalStorage('history',JSON.stringify(HISTORY))
 }
@@ -96,11 +97,31 @@ export function onError(){
  * @param {number} num - the number to compute the factorial of.
  * @returns {number} the factorial of the given number.
  */
-export function factorial(num){
+function factorial(num){
     if(num === 0 || num === 1){
         return 1
     }
-    else{
-        return num * factorial(num-1)
+    let result = 1;
+    for (let i = 2; i <= num; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+export function factorialHandler() {
+    const inputStr = getExpression();
+    if (inputStr === "" || isNaN(inputStr[inputStr.length - 1])) return;
+   
+    let num = "";
+    let i = inputStr.length - 1;
+   
+    while (i >= 0 && !isNaN(inputStr[i])) {
+      num = inputStr[i] + num;
+      i--;
+    }
+   
+    if (num !== "") {
+      let factValue = factorial(Number(num));
+      return factValue
     }
 }

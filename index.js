@@ -1,7 +1,7 @@
-import { TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent } from './constant.js'
+import { TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, ERROR } from './constant.js'
 import { getIsDegreeEnabled } from './degree.js'
 import { toggleExponential } from './function-expression.js'
-import { calculateResult, clearScreen, factorial, onError, updateExpressionAndDisplay } from './utils.js'
+import { calculateResult, clearScreen, factorialHandler, onError, updateExpressionAndDisplay } from './utils.js'
 
 /**
  * stores the current mathematical expression.
@@ -147,6 +147,9 @@ function handleTrignometryAdvanceMathFunction(e){
  * @param {Event} event - the event object triggered by a button click.
  */
 function handleOperationClick(event){
+    if(getDisplayScreenContent() === ERROR){
+        clearScreen()
+    }
     const name = event.target.closest("button")?.name
     const IS_DIGIT = name >=0 && name <=9
     const IS_ARITHEMATIC_OPERATION = name== '+' || name == '-' || name == '*' || name == '/' || name == '(' || name == ')' || name== '%' || name == '.'
@@ -170,7 +173,7 @@ function handleOperationClick(event){
                 }
             case CALCULATOR_OPERATION.factorial:
                 replaceDisplayScreenContent(getExpression() + '!')
-                const factorialAnswer = factorial(getExpression()[getExpression().length - 1])
+                const factorialAnswer = factorialHandler()
                 replaceExpression(getExpression().slice(0,getExpression().length-1))
                 setExpression(factorialAnswer)
                 break
@@ -251,6 +254,7 @@ function handleOperationClick(event){
                 break
             case CALCULATOR_OPERATION.exp:
                 toggleExponential()
+                break 
         }
     }
 }
