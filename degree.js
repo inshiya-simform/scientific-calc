@@ -1,15 +1,26 @@
-import { getExpression, replaceExpression } from "./index.js"
-import { replaceDisplayScreenContent} from "./constant.js"
-
+/**
+ * event listeners for triggering degree/radian mode
+ */
 document.getElementById("deg").addEventListener("click", degreeClickEventHandler)
-document.getElementById("fe").addEventListener("click",toggleExponential)
+
+/**
+ * toggles between degree and radian mode.
+ * @type {boolean}
+ */
 export let isDegreeEnabled = true
 
+/**
+ * toggles the degree/radian mode and updates the button text accordingly.
+ */
 function degreeToggle() {
     isDegreeEnabled = !isDegreeEnabled
     document.querySelector("#deg").textContent = isDegreeEnabled ? "DEG" : "RAD"
 }
-   
+
+/**
+ * handles the click event for the degree/radian and F-E button.
+ * @param {Event} e - the event object triggered by the click event.
+ */
 function degreeClickEventHandler(e) {
     const degreeOrRadian = e.target.closest("button")?.value
    
@@ -21,26 +32,5 @@ function degreeClickEventHandler(e) {
         toggleExponential()
       default:
         break
-    }
-}
-
-let isExponential = false
-   
-export function toggleExponential() {
-    if (!getExpression() || isNaN(Number(getExpression()))) return
-   
-    const num = Number(getExpression())
-    isExponential = !isExponential
-   
-    if (isExponential) {
-      const exponent = num.toExponential().split("e")
-      const expressionStr = `${exponent[0]}*10**${Number(exponent[1])}`
-      replaceExpression(expressionStr)
-      const displayStr = `${exponent[0]}*10^${Number(exponent[1])}`
-      replaceDisplayScreenContent(displayStr)
-      isExponential = false
-    } else {
-      replaceExpression(num.toString())
-      replaceDisplayScreenContent(getExpression())
     }
 }
