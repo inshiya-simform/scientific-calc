@@ -1,15 +1,38 @@
-import { MEMORY_OPERATION, getDisplayScreen, getDisplayScreenContent, setDisplayScreenContent, replaceDisplayScreenContent, MEMORY_EMPTY, ONLY_DIGITS, MEMORY_KEY } from "./constant.js"
+import { MEMORY_OPERATION, getDisplayScreenContent, setDisplayScreenContent, MEMORY_EMPTY, ONLY_DIGITS, MEMORY_KEY } from "./constant.js"
 import { $, setLocalStorage, getLocalStorage, removeFromLocalStorage, updateNodeList } from './utils.js'
 import { setExpression } from './index.js'
 
+/**
+ * element for memory operation buttons.
+ * @type {HTMLElement}
+ */
 const memoryOperationElement = document.getElementById('memory-op')
 memoryOperationElement.addEventListener("click", handleMemoryOperation)
 
+/**
+ * list of nodes having light as classname.
+ * memory clear and memory read.
+ * @type {NodeListOf<HTMLElement>}
+ */
 const nodeList = document.querySelectorAll('.light')
+
+/** 
+ * if memory data exists in local storage, updates the color of the memory buttons.
+ */
 if(getLocalStorage(MEMORY_KEY) != null){
     updateNodeList(nodeList, 'color', 'black')
 }
-// function handles memory related operations
+
+/**
+ * handles the memory-related operations trigerred by button clicks.
+ * supports following operations:
+ * -memory clear (mc)
+ * -memory read (mr)
+ * -memory add (m+)
+ * -memory subtract (m-)
+ * -memory save (ms)
+ * @param {Event} e 
+ */
 function handleMemoryOperation(e){
     const name = e.target.name
     switch(name){
