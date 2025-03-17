@@ -26,7 +26,7 @@ function degreeClickEventHandler(e) {
 
 let isExponential = false
    
-function toggleExponential() {
+export function toggleExponential() {
     if (!getExpression() || isNaN(Number(getExpression()))) return
    
     const num = Number(getExpression())

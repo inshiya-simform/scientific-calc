@@ -1,5 +1,5 @@
 import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
-import { isDegreeEnabled } from './degree.js'
+import { isDegreeEnabled, toggleExponential } from './degree.js'
 import { $, setLocalStorage } from './utils.js'
 
 // global variables used throughout
@@ -200,6 +200,7 @@ function handleOperationClick(event){
                 const toggleLastDigit = Number(lastDigitOfExpression[1]) * -1
                 replaceExpression(getExpression().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
                 replaceDisplayScreenContent(getDisplayScreenContent().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
+                break
             case CALCULATOR_OPERATION.second:
                 is2ndEnabled = !is2ndEnabled
                 // if flag if true then change superscript characters to 3 else 2
@@ -211,6 +212,9 @@ function handleOperationClick(event){
                     squareRootElement.textContent = '2'
                     squareElement.textContent = '2'
                 }
+                break
+            case CALCULATOR_OPERATION.exp:
+                toggleExponential()
         }
     }
 }
