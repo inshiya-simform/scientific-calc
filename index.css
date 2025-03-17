@@ -8,6 +8,7 @@
     --font-light: rgb(199, 198, 198);
     --bg: rgb(243, 240, 240);
     --danger: rgb(255, 124, 124);
+    --bg-history: rgb(219, 217, 217)
 }
 /* element styling  */
 body,html{
@@ -79,33 +80,32 @@ main{
 }
 /* trignometric functions, floor and ceil function section  */
 .functions{
-    display: grid;
-    grid-template-columns: repeat(5,1fr);
+    display: flex;
+    justify-content: space-around;
     gap: var(--space);
 }
 .functions > div{
     display: flex;
 }
-.functions > div > select:hover{
+.functions > div > select:hover, #history:hover{
     background-color: #fff;
-}
-.functions > div:first-child{
-    grid-column: 1/3;
-}
+}   
 .functions img{
     width: 20px;
     height: 20px;
     margin: auto;
 }
-#trignometry{
-    grid-column: 1/3;
+#history{
+    padding: var(--space);
 }
+
 /* key operation  */
 .keys{
     display: grid;
     grid-template-columns: repeat(5,1fr);
     grid-template-rows: repeat(7,1fr);
     gap: 2px;
+    position: relative;
 }
 .btn{
     background-color: var(--bg-btn);
@@ -126,6 +126,25 @@ main{
 }
 #calculate:hover{
     background-color: var(--lightblue-hover)
+}
+
+/* history  section  */
+.history{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--bg-history);
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    display: none;
+}
+#history_list{
+    list-style: square;
+    color: #333;
+    font-size: 14px;
+    width: 300px;
+    text-wrap: wrap;
 }
 
 /* reponsiveness  */

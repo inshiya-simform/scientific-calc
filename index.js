@@ -1,24 +1,39 @@
-import {ERROR} from './constant.js'
+import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
+import { $, setLocalStorage } from './utils.js'
 
-//selecting and adding event listeners to html elements
-const keys = document.querySelector('.keys')
-keys.addEventListener("click",handleClick)
+// global variables used throughout
+let expression = ""
+export function getExpression(){
+    return expression
+}
+export function setExpression(str){
+    expression += str
+}
+export function replaceExpression(str){
+    expression = str
+}
 
-const trigno = document.getElementById('trignometry')
-trigno.addEventListener('change',handleChange)
+let is2ndEnabled = false // track 2nd button state
 
-const functions = document.getElementById('function')
-functions.addEventListener("change",handleChange)
+// selecting and adding event listeners to html elements
+const operationElement = document.querySelector('.keys')
+operationElement.addEventListener("click",handleOperationClick)
 
-//key events
-document.addEventListener("keydown", handleBackSpcae)
+const trignometryOperationElement = document.getElementById('trignometry')
+trignometryOperationElement.addEventListener('change',handleTrignometryAdvanceMathFunction)
+
+const advanceMathOperationElement = document.getElementById('function')
+advanceMathOperationElement.addEventListener("change",handleTrignometryAdvanceMathFunction)
+
+// key events
+document.addEventListener("keydown", handleBackSpace)
 document.addEventListener("keypress", handleKeyEvent)
 
 // function to handle the backspace
-function handleBackSpcae(e) {
+function handleBackSpace(e) {
     if (e.key === "Backspace") {
-      expression = expression.slice(0, -1)
-      display.textContent = display.textContent.slice(0, -1)
+      replaceExpression(getExpression().slice(0, -1))
+      replaceDisplayScreenContent(getDisplayScreenContent().slice(0, -1))
     }
   }
 // function to handle keypress events
@@ -42,162 +57,155 @@ function handleKeyEvent(e) {
         if (key === "Enter" || key === "=") 
         {
             try{
-                display.textContent = eval(expression).toFixed(2)
+                calculateResult()
             }catch(error){
-                display.textContent = ERROR
-                display.style.color = "red"
+                onError()
             }
             
         } 
         else if(key.toLowerCase() === "c"){
-            display.textContent = ""
-            expression = ""
+            clearScreen()
         }
         else {
-            expression += key
-            display.textContent += key
+            updateExpressionAndDisplay(key,key)
         }
     }
 }
 
 // selecting elements from html
-const display = document.getElementById('ans')
-const sqrt__changed = document.getElementById('sqrt__change')
-const sqr__changed = document.getElementById('sqr__change')
-
-//global variables used throughout
-let expression = ""
-let second__flag = false // track 2nd button state
+const squareRootElement = document.getElementById('sqrt__change')
+const squareElement = document.getElementById('sqr__change')
 
 // function handles trignometric, floor and ceil functions
-function handleChange(e){
-    let value = e.target.value
-    const trigno_func = document.getElementById('trigno_func')
-    const func = document.getElementById('func')
-    switch(value){
-        case "sin(x)":
-            updateData('Math.sin(','sin(')
-            trigno_func.selected = true
+function handleTrignometryAdvanceMathFunction(e){
+    const operationName = e.target.value
+    const trignometryOperation = document.getElementById('trigno_func')
+    const advMathOperation = document.getElementById('func')
+    switch(operationName){
+        case TRIGNOMETRY_ADV_MATH_OPERATION.sine:
+            updateExpressionAndDisplay('Math.sin(','sin(')
+            trignometryOperation.selected = true
             break
-        case "cos(x)":
-            updateData('Math.cos(','cos(')
-            trigno_func.selected = true
+        case TRIGNOMETRY_ADV_MATH_OPERATION.cosine:
+            updateExpressionAndDisplay('Math.cos(','cos(')
+            trignometryOperation.selected = true
             break
-        case "tan(x)":
-            updateData('Math.tan(','tan(')
-            trigno_func.selected = true
+        case TRIGNOMETRY_ADV_MATH_OPERATION.tan:
+            updateExpressionAndDisplay('Math.tan(','tan(')
+            trignometryOperation.selected = true
             break
-        case "floor(x)":
-            updateData('Math.floor(','floor(')
-            func.selected = true
+        case TRIGNOMETRY_ADV_MATH_OPERATION.floor:
+            updateExpressionAndDisplay('Math.floor(','floor(')
+            advMathOperation.selected = true
             break
-        case "ceil(x)":
-            updateData('Math.ceil(','ceil(')
-            func.selected = true
+        case TRIGNOMETRY_ADV_MATH_OPERATION.ceil:
+            updateExpressionAndDisplay('Math.ceil(','ceil(')
+            advMathOperation.selected = true
             break
     }  
 }
 
 // function handles all the key operations
-function handleClick(event){
-    let name = event.target.closest("button")?.name
-    if(((name >=0 && name <=9) || (name== '+' || name == '-' || name == '*' || name == '/' || name == '(' || name == ')' || name== '%' || name == '.')) 
-        && name !== undefined 
-        && name != "calc") 
+function handleOperationClick(event){
+    const name = event.target.closest("button")?.name
+    const IS_DIGIT = name >=0 && name <=9
+    const IS_ARITHEMATIC_OPERATION = name== '+' || name == '-' || name == '*' || name == '/' || name == '(' || name == ')' || name== '%' || name == '.'
+    if(((IS_DIGIT) || (IS_ARITHEMATIC_OPERATION)) && name !== undefined && name != "calc") 
     {
-        updateData(name,name)      
+        updateExpressionAndDisplay(name,name)      
     }
     else{
         switch (name){
-            case "C":
-                display.textContent =""
-                display.style.fontSize = "-webkit-xxx-large"
-                display.style.color = "black"
-                expression = ""
+            case CALCULATOR_OPERATION.clear:
+                clearScreen()
                 break
-            case "calc":
+            case CALCULATOR_OPERATION.calculate:
                 try{
-                    display.textContent = eval(expression).toFixed(2)
+                    calculateResult()
                     break
                 }
                 catch(error){
-                    display.textContent = ERROR
-                    display.style.color = "red"
+                    onError()
                     break
                 }
-            case "factorial":
-                display.textContent = expression + '!'
-                let fact__ans = factorial(expression[expression.length - 1])
-                expression = expression.slice(0,expression.length-1)
-                expression += fact__ans
+            case CALCULATOR_OPERATION.factorial:
+                replaceDisplayScreenContent(getExpression() + '!')
+                const factorialAnswer = factorial(getExpression()[getExpression().length - 1])
+                replaceExpression(getExpression().slice(0,getExpression().length-1))
+                setExpression(factorialAnswer)
                 break
-            case "del":
-                if(expression.endsWith('**')){
-                    expression = expression.slice(0,-1)
+            case CALCULATOR_OPERATION.delete:
+                if(getExpression().endsWith('**')){
+                    replaceExpression(getExpression().slice(0,-1))
                 }
-                if(expression.endsWith('Math.E')){
-                    expression = expression.slice(0,-7)
+                if(getExpression().endsWith('Math.E')){
+                    replaceExpression(getExpression().slice(0,-7))
                 }
-                else if(expression.endsWith('Math.PI')){
-                    expression = expression.slice(0,-8)
+                else if(getExpression().endsWith('Math.PI')){
+                    replaceExpression(getExpression().slice(0,-8))
                 }
                 else{
-                    expression = expression.slice(0,-1)
+                    replaceExpression(getExpression().slice(0,-1))
                 }
-                display.textContent = display.textContent.slice(0,-1)
+                replaceDisplayScreenContent(getDisplayScreenContent().textContent.slice(0,-1))
                 break
-            case "e":
-                display.textContent +=  'e'
-                expression = expression ? expression + "*Math.E" : "Math.E"
+            case CALCULATOR_OPERATION.e:
+                setDisplayScreenContent('e')
+                const eValue = getExpression() ? getExpression() + "*Math.E" : "Math.E"
+                replaceExpression(eValue)
                 break
-            case "abs":
-                expression += 'abs('
-                display.textContent = expression
+            case CALCULATOR_OPERATION.absolute:
+                updateExpressionAndDisplay('Math.abs(','abs(')
                 break
-            case "pi":
-                display.textContent +=  '𝜋'
-                expression = expression ? expression + "*Math.PI" : "Math.PI"
+            case CALCULATOR_OPERATION.pi:
+                setDisplayScreenContent('𝜋')
+                const piValue = getExpression() ? getExpression() + "*Math.PI" : "Math.PI"
+                replaceExpression(piValue)
+
                 break
-            case "div-by-1":
-                expression += "(1/"
-                display.textContent = expression
+            case CALCULATOR_OPERATION.fraction:
+                setExpression("(1/")
+                replaceDisplayScreenContent(getExpression())
                 break
-            case "sqr":
-                let val = second__flag ? Math.pow(expression[expression.length-1], 3) : Math.pow(expression[expression.length-1], 2)
-                expression = expression.slice(0, expression.length-1) + val
-                display.textContent += second__flag ? '^3' : '^2'
+            case CALCULATOR_OPERATION.square:
+                const val = is2ndEnabled ? Math.pow(getExpression()[getExpression().length-1], 3) : Math.pow(getExpression()[getExpression().length-1], 2)
+                replaceExpression(getExpression().slice(0, getExpression().length-1) + val)
+                const valOn2nd= is2ndEnabled ? '^3' : '^2'
+                setDisplayScreenContent(valOn2nd)
                 break
-            case "sqrt":
-                expression += second__flag ? 'Math.cbrt(' :'Math.sqrt('
-                display.textContent += second__flag ? '∛(' : '√('
+            case CALCULATOR_OPERATION.squareRoot:
+                const cbrtValue = is2ndEnabled ? 'Math.cbrt(' :'Math.sqrt('
+                setExpression(cbrtValue)
+                const rootOn2nd = is2ndEnabled ? '∛(' : '√('
+                setDisplayScreenContent(rootOn2nd)
                 break
-            case "x-pow-y":
-                updateData("**","^")
+            case CALCULATOR_OPERATION.power:
+                updateExpressionAndDisplay("**","^")
                 break
-            case "10-pow-x":
-                updateData("10**","10^")
+            case CALCULATOR_OPERATION.tenPower:
+                updateExpressionAndDisplay("10**","10^")
                 break
-            case "log":
-                updateData("Math.log(","log(")
+            case CALCULATOR_OPERATION.log:
+                updateExpressionAndDisplay("Math.log(","log(")
                 break
-            case "ln":
-                updateData('Math.log10(','ln(')
+            case CALCULATOR_OPERATION.ln:
+                updateExpressionAndDisplay('Math.log10(','ln(')
                 break
-            case "+/-":
-                let match = expression.match(/(-?\d+(\.\d+)?)$/)
-                let toggle = Number(match[1]) * -1
-                expression = expression.replace(/(-?\d+(\.\d+)?)$/, `${toggle}`)
-                display.textContent = display.textContent.replace(/(-?\d+(\.\d+)?)$/, `${toggle}`)
-            case "2nd":
-                second__flag = !second__flag
+            case CALCULATOR_OPERATION.toggleSign:
+                const lastDigitOfExpression = getDisplayScreenContent().match(/(-?\d+(\.\d+)?)$/)
+                const toggleLastDigit = Number(lastDigitOfExpression[1]) * -1
+                replaceExpression(getExpression().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
+                replaceDisplayScreenContent(getDisplayScreenContent().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
+            case CALCULATOR_OPERATION.second:
+                is2ndEnabled = !is2ndEnabled
                 // if flag if true then change superscript characters to 3 else 2
-                if(second__flag){
-                    sqrt__changed.textContent = '3'
-                    sqr__changed.textContent = '3'
+                if(is2ndEnabled){
+                    squareRootElement.textContent = '3'
+                    squareElement.textContent = '3'
                 }
                 else{
-                    sqrt__changed.textContent = '2'
-                    sqr__changed.textContent = '2'
+                    squareRootElement.textContent = '2'
+                    squareElement.textContent = '2'
                 }
         }
     }
@@ -214,7 +222,27 @@ function factorial(num){
 }
 
 // updates data
-function updateData(expContent,displayContent){
-    expression += expContent
-    display.textContent += displayContent
-  }
+function updateExpressionAndDisplay(expContent,displayContent){
+    setExpression(expContent)
+    setDisplayScreenContent(displayContent)
+}
+
+// clear display content
+function clearScreen(){
+    replaceDisplayScreenContent("")
+    $(getDisplayScreen()).css('font-size','-webkit-xxx-large').css('color','black')
+    replaceExpression("")
+}
+
+// calculates result
+function calculateResult(){
+    replaceDisplayScreenContent(eval(getExpression()).toFixed(2))
+    HISTORY.push(getExpression() + '=' + getDisplayScreenContent())
+    setLocalStorage('history',JSON.stringify(HISTORY))
+}
+
+// error
+function onError(){
+    replaceDisplayScreenContent(ERROR)
+    $(getDisplayScreen()).css('color','red')
+}
