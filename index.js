@@ -1,4 +1,5 @@
 import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
+import { isDegreeEnabled } from './degree.js'
 import { $, setLocalStorage } from './utils.js'
 
 // global variables used throughout
@@ -83,15 +84,18 @@ function handleTrignometryAdvanceMathFunction(e){
     const advMathOperation = document.getElementById('func')
     switch(operationName){
         case TRIGNOMETRY_ADV_MATH_OPERATION.sine:
-            updateExpressionAndDisplay('Math.sin(','sin(')
+            const sinStr = isDegreeEnabled ? 'Math.sin((Math.PI/180)*' : 'Math.sin('
+            updateExpressionAndDisplay(sinStr,'sin(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.cosine:
-            updateExpressionAndDisplay('Math.cos(','cos(')
+            const cosStr = isDegreeEnabled ? 'Math.cos((Math.PI/180)*' : 'Math.cos('
+            updateExpressionAndDisplay(cosStr,'cos(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.tan:
-            updateExpressionAndDisplay('Math.tan(','tan(')
+            const tanStr = isDegreeEnabled ? 'Math.tan((Math.PI/180)*' : 'Math.tan('
+            updateExpressionAndDisplay(tanStr,'tan(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.floor:
