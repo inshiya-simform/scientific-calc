@@ -147,6 +147,9 @@ function handleTrignometryAdvanceMathFunction(e){
  * @param {Event} event - the event object triggered by a button click.
  */
 function handleOperationClick(event){
+    if(getDisplayScreenContent() === "Error"){
+        clearScreen()
+    }
     const name = event.target.closest("button")?.name
     const IS_DIGIT = name >=0 && name <=9
     const IS_ARITHEMATIC_OPERATION = name== '+' || name == '-' || name == '*' || name == '/' || name == '(' || name == ')' || name== '%' || name == '.'
@@ -251,6 +254,7 @@ function handleOperationClick(event){
                 break
             case CALCULATOR_OPERATION.exp:
                 toggleExponential()
+                break 
         }
     }
 }
