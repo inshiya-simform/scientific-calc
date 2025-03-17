@@ -1,5 +1,5 @@
-import { ERROR, HISTORY, getDisplayScreen, setDisplayScreenContent, replaceDisplayScreenContent } from "./constant.js"
-import { $, setLocalStorage } from './utils.js'
+import { ERROR, HISTORY, getDisplayScreen, setDisplayScreenContent, replaceDisplayScreenContent, getDisplayScreenContent } from "./constant.js"
+import { getExpression, replaceExpression, setExpression } from "./index.js"
 
 /**
  * selects an html element and provide a method to apply css styles.
