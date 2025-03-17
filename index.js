@@ -151,7 +151,7 @@ function handleOperationClick(event){
                 else{
                     replaceExpression(getExpression().slice(0,-1))
                 }
-                replaceDisplayScreenContent(getDisplayScreenContent().textContent.slice(0,-1))
+                replaceDisplayScreenContent(getDisplayScreenContent().slice(0,-1))
                 break
             case CALCULATOR_OPERATION.e:
                 setDisplayScreenContent('e')
