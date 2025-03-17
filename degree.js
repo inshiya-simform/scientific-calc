@@ -7,7 +7,15 @@ document.getElementById("deg").addEventListener("click", degreeClickEventHandler
  * toggles between degree and radian mode.
  * @type {boolean}
  */
-export let isDegreeEnabled = true
+let isDegreeEnabled = true
+
+/**
+ * getter function to retrieve the state of degree mode.
+ * @returns {boolean}
+ */
+export function getIsDegreeEnabled(){
+  return isDegreeEnabled
+}
 
 /**
  * toggles the degree/radian mode and updates the button text accordingly.

@@ -91,6 +91,16 @@ export const CALCULATOR_OPERATION = {
 }
 
 /**
+ * @constant {Object} DEGREE_FE - object containing degree and fe mode operations.
+ * @property {string} degree - degree and radian toggle mode.
+ * @property {string} FE - exponential function mode.
+ */
+export const DEGREE_FE = {
+    degree : "degree",
+    FE : "F-E",
+}
+
+/**
  * @constant {Array} HISTORY - store all previous calculations
  */
 export const HISTORY = []

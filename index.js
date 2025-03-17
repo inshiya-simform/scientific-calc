@@ -1,5 +1,5 @@
 import { TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent } from './constant.js'
-import { isDegreeEnabled } from './degree.js'
+import { getIsDegreeEnabled } from './degree.js'
 import { toggleExponential } from './function-expression.js'
 import { calculateResult, clearScreen, factorial, onError, updateExpressionAndDisplay } from './utils.js'
 
@@ -117,17 +117,17 @@ function handleTrignometryAdvanceMathFunction(e){
     const advMathOperation = document.getElementById('func')
     switch(operationName){
         case TRIGNOMETRY_ADV_MATH_OPERATION.sine:
-            const sinStr = isDegreeEnabled ? 'Math.sin((Math.PI/180)*' : 'Math.sin('
+            const sinStr = getIsDegreeEnabled() ? 'Math.sin((Math.PI/180)*' : 'Math.sin('
             updateExpressionAndDisplay(sinStr,'sin(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.cosine:
-            const cosStr = isDegreeEnabled ? 'Math.cos((Math.PI/180)*' : 'Math.cos('
+            const cosStr = getIsDegreeEnabled() ? 'Math.cos((Math.PI/180)*' : 'Math.cos('
             updateExpressionAndDisplay(cosStr,'cos(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.tan:
-            const tanStr = isDegreeEnabled ? 'Math.tan((Math.PI/180)*' : 'Math.tan('
+            const tanStr = getIsDegreeEnabled() ? 'Math.tan((Math.PI/180)*' : 'Math.tan('
             updateExpressionAndDisplay(tanStr,'tan(')
             trignometryOperation.selected = true
             break
