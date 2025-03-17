@@ -60,9 +60,12 @@ main{
     text-align: center;
 }
 .deg button{
-    margin: var(--space);
+    padding: var(--space);
     font-size: small;
     font-weight: 600;
+}
+.deg button:hover{
+    background-color: white;
 }
 /* memory operation  */
 .memory-operation{
