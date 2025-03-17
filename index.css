@@ -51,12 +51,15 @@ main{
     font-size: -webkit-xxx-large;
 }
 /* degree and function expression section  */
+.deg{
+    height: fit-content;
+}
 .deg > div{
     display: flex;
     gap: 10%;
     text-align: center;
 }
-.deg p{
+.deg button{
     margin: var(--space);
     font-size: small;
     font-weight: 600;
