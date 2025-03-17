@@ -1,5 +1,5 @@
 import { getExpression, replaceExpression } from "./index.js"
-import { replaceDisplayScreenContent} from "./constant.js"
+import { getDisplayScreen, getDisplayScreenContent, replaceDisplayScreenContent} from "./constant.js"
 
 /**
  * event listeners for triggering exponential mode
@@ -17,11 +17,10 @@ let isExponential = false
  * converts between standard numeric representation and scientific notation.
  */
 export function toggleExponential() {
-    if (!getExpression() || isNaN(Number(getExpression()))) return
+    if (!getExpression() || isNaN(Number(getDisplayScreenContent()))) return
    
-    const num = Number(getExpression())
+    const num = Number(getDisplayScreenContent())
     isExponential = !isExponential
-   
     if (isExponential) {
       const exponent = num.toExponential().split("e")
       const expressionStr = `${exponent[0]}*10**${Number(exponent[1])}`

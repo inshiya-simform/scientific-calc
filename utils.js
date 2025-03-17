@@ -78,7 +78,8 @@ export function clearScreen(){
  */
 export function calculateResult(){
     const removeZeroes = getExpression().replace(/\b0+(\d+)/g, "$1")
-    replaceDisplayScreenContent(eval(removeZeroes).toFixed(2))
+    const result = eval(removeZeroes).toFixed(2)
+    replaceDisplayScreenContent(result.toString())
     HISTORY.push(getExpression() + '=' + getDisplayScreenContent())
     setLocalStorage('history',JSON.stringify(HISTORY))
 }
