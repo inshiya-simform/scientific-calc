@@ -1,9 +1,12 @@
 import { getExpression, replaceExpression } from "./index.js"
-import { replaceDisplayScreenContent} from "./constant.js"
+import { DEGREE_FE, replaceDisplayScreenContent} from "./constant.js"
 
 document.getElementById("deg").addEventListener("click", degreeClickEventHandler)
 document.getElementById("fe").addEventListener("click",toggleExponential)
-export let isDegreeEnabled = true
+let isDegreeEnabled = true
+export function getIsDegreeEnabled(){
+  return isDegreeEnabled
+}
 
 function degreeToggle() {
     isDegreeEnabled = !isDegreeEnabled
@@ -14,10 +17,10 @@ function degreeClickEventHandler(e) {
     const degreeOrRadian = e.target.closest("button")?.value
    
     switch (degreeOrRadian) {
-      case "degree":
+      case DEGREE_FE.degree:
         degreeToggle()
         break;
-      case "F-E":
+      case DEGREE_FE.FE:
         toggleExponential()
       default:
         break
