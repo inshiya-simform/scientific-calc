@@ -34,6 +34,11 @@ export const CALCULATOR_OPERATION = {
     ln : "ln",
     toggleSign : "+/-",
     second : "2nd",
+    exp: "exp",
+}
+export const DEGREE_FE = {
+    degree : "degree",
+    FE : "F-E",
 }
 export const HISTORY = [] // store all previous calculations
 let DISPLAY_SCREEN = document.getElementById('ans')

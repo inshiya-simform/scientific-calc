@@ -1,4 +1,5 @@
 import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
+import { getIsDegreeEnabled, toggleExponential } from './degree.js'
 import { $, setLocalStorage } from './utils.js'
 
 // global variables used throughout
@@ -83,15 +84,18 @@ function handleTrignometryAdvanceMathFunction(e){
     const advMathOperation = document.getElementById('func')
     switch(operationName){
         case TRIGNOMETRY_ADV_MATH_OPERATION.sine:
-            updateExpressionAndDisplay('Math.sin(','sin(')
+            const sinStr = getIsDegreeEnabled() ? 'Math.sin((Math.PI/180)*' : 'Math.sin('
+            updateExpressionAndDisplay(sinStr,'sin(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.cosine:
-            updateExpressionAndDisplay('Math.cos(','cos(')
+            const cosStr = getIsDegreeEnabled() ? 'Math.cos((Math.PI/180)*' : 'Math.cos('
+            updateExpressionAndDisplay(cosStr,'cos(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.tan:
-            updateExpressionAndDisplay('Math.tan(','tan(')
+            const tanStr = getIsDegreeEnabled() ? 'Math.tan((Math.PI/180)*' : 'Math.tan('
+            updateExpressionAndDisplay(tanStr,'tan(')
             trignometryOperation.selected = true
             break
         case TRIGNOMETRY_ADV_MATH_OPERATION.floor:
@@ -147,7 +151,7 @@ function handleOperationClick(event){
                 else{
                     replaceExpression(getExpression().slice(0,-1))
                 }
-                replaceDisplayScreenContent(getDisplayScreenContent().textContent.slice(0,-1))
+                replaceDisplayScreenContent(getDisplayScreenContent().slice(0,-1))
                 break
             case CALCULATOR_OPERATION.e:
                 setDisplayScreenContent('e')
@@ -196,6 +200,7 @@ function handleOperationClick(event){
                 const toggleLastDigit = Number(lastDigitOfExpression[1]) * -1
                 replaceExpression(getExpression().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
                 replaceDisplayScreenContent(getDisplayScreenContent().replace(/(-?\d+(\.\d+)?)$/, `${toggleLastDigit}`))
+                break
             case CALCULATOR_OPERATION.second:
                 is2ndEnabled = !is2ndEnabled
                 // if flag if true then change superscript characters to 3 else 2
@@ -207,6 +212,9 @@ function handleOperationClick(event){
                     squareRootElement.textContent = '2'
                     squareElement.textContent = '2'
                 }
+                break
+            case CALCULATOR_OPERATION.exp:
+                toggleExponential()
         }
     }
 }
