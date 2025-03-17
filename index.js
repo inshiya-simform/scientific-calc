@@ -1,5 +1,6 @@
 import { ERROR, TRIGNOMETRY_ADV_MATH_OPERATION, CALCULATOR_OPERATION, setDisplayScreenContent, getDisplayScreenContent, replaceDisplayScreenContent, HISTORY, getDisplayScreen } from './constant.js'
-import { isDegreeEnabled, toggleExponential } from './degree.js'
+import { isDegreeEnabled } from './degree.js'
+import { toggleExponential } from './function-expression.js'
 import { $, setLocalStorage } from './utils.js'
 
 // global variables used throughout
