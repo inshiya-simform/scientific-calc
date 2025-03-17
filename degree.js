@@ -3,6 +3,7 @@
  */
 document.getElementById("deg").addEventListener("click", degreeClickEventHandler)
 
+
 /**
  * toggles between degree and radian mode.
  * @type {boolean}
@@ -33,10 +34,10 @@ function degreeClickEventHandler(e) {
     const degreeOrRadian = e.target.closest("button")?.value
    
     switch (degreeOrRadian) {
-      case "degree":
+      case DEGREE_FE.degree:
         degreeToggle()
         break;
-      case "F-E":
+      case DEGREE_FE.FE:
         toggleExponential()
       default:
         break
